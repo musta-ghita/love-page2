@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>love-page2 💗</title><style>
+*{
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ffd6e8,#fff0f6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.container{
+  background:#fff;
+  padding:28px 22px;
+  border-radius:22px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.12);
+  text-align:center;
+  width:90%;
+  max-width:380px;
+  animation:fadeUp .8s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+h1{
+  color:#ff5c8a;
+  margin-bottom:10px;
+  font-size:24px;
+}
+
+h2{
+  color:#ff7fa3;
+  font-weight:500;
+  margin-bottom:26px;
+  font-size:17px;
+  line-height:1.6;
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+}
+
+button{
+  border:none;
+  padding:12px 22px;
+  border-radius:25px;
+  font-size:15px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+#yes{
+  background:#ff5c8a;
+  color:#fff;
+}
+
+#yes:active{
+  transform:scale(.95);
+}
+
+#no{
+  background:#eee;
+  color:#666;
+  position:relative;
+}
+
+.message{
+  display:none;
+  margin-top:20px;
+  font-size:15px;
+  color:#ff5c8a;
+  line-height:1.7;
+  animation:fadeUp .6s ease forwards;
+  white-space:pre-line;
+}
+
+.heart{
+  position:absolute;
+  font-size:18px;
+  animation:float 4s linear forwards;
+  opacity:.85;
+}
+
+@keyframes float{
+  0%{transform:translateY(0) scale(1)}
+  100%{transform:translateY(-500px) scale(1.6);opacity:0}
+}
+</style></head><body><div class="container">
+  <h1>غيثة 💗</h1>
+  <h2 id="question"></h2>  <div class="buttons">
+    <button id="yes">نعم 🌸</button>
+    <button id="no">لا</button>
+  </div>  <div class="message" id="message"></div>
+</div><script>
+const questions = [
+  "كتبغيني كيما نبغيك 🙂💗 ؟؟",
+  "تقبلي تكوني my valentine 💍😍🙂?",
+  "تحبي تكوني خاضعة لي 🙂 (لا ضاحك برك)",
+  "كتعتاقدي بلي انت اجمل بنوتة فلكون؟ 🙂😍",
+  "هلا نبقاو طول العمر مع بعض؟ 🫂",
+  "تعرفي شحال مكانتك وقيمتك في قلبي ولا لا؟ ✨🐥",
+  "تقبلي نجي نبوسك يا زين من ديك لبلاصة؟ 🙂💋",
+  "تقبلي نكون فلوقات صعيبة ur therapist؟ 🫶",
+  "هل انا الشاب العربي؟ 😂",
+  "كتحسي بالامان ونتي معايا؟ 🫂",
+  "كيعجبوك لورود؟ 🪷",
+  "مذكرة اول كلمة قلتهالك تع حب؟ 🧸",
+  "شي نهار حلمتيني معاك فلفراش؟ 🙂😍",
+  "كتعجبك غيرتي الزايدة؟ 😠",
+  "ليامات لي ضاربنا فيهم كثر ملي متصالحين؟ 😂",
+  "تتخيلي فالمستقبل نسافرو بعيد؟ 🪩",
+  "كتظني بلي غا نكون اب صالح؟ 🙂💋",
+  "هل هذي افضل علاقة دازت عليك؟",
+  "كتظني انني نطيب حسن منك 😂🙂؟",
+  "الا درنا شي سباق اتسبقيني؟ 🙂",
+  "كيعجبك منين نغنيلك؟ 🎀💗",
+  "كيعجبك مصطفى childish مامي؟ 🫥🌚",
+  "عجبوك هاذ الاسئلة ولا والو 🐼؟",
+  "فالاخير، هل تقبلين بي ساد*يا لاجلك 😂💗"
+];
+
+const responses = [
+  "😑😑😑فكيو",
+  "قودييييييي خانزة نتي تاعي ربك",
+  "مضااااحكش 🌚 اجي لمك",
+  "اذن خليتي لخيار لبنتنا اتديهالك 🙂😍",
+  "باللصقة فهمتي؟ 🙂 بداك لغراء",
+  "بزااااااف كبيرة ♾️♾️♾️♾️",
+  "من حناكك مالكي نتي تاني لبوسان وحرمتينا منه",
+  "👩‍❤️‍👨 بلاا ناناااك انا لمعالج النفسي",
+  "ونتي فقمة ياله 🙂 فقمة غوز وكيوت",
+  "اربطي حزام الامان 🐼(حامض)",
+  "انا كيعجبوني وعندي الاحلى فيهم ديتها 🪷🫵🏻😍",
+  "عمري 🫥",
+  "كداابة غي داك نهار قتيهالي ووو فلمنام ومنطلقك",
+  "صوالحي ليا وحدي ✅ عندك زهر منيش حداك",
+  "the truth ✅ متكدبيش هههه",
+  "ديري يدك فيديا نديك لكوريااااا ✨(متعجبكش)",
+  "لبنيتة لولة متهليتش فيها ني انتحسن علاجالهم 🙂💗",
+  "🙂💔 no comment",
+  "اسيري نتي وش تعرفي انا حسن 🌚",
+  "نخليك تسبقيني ✅",
+  "ادن لحناجر لبولية وكنتي تسلكيلي وصاي 🙂",
+  "mommmyyyyyy 🙂🍼🍼 باغي نرضع",
+  "اوا وش غانديرلك",
+  "ديجا راكي قابلة اديك لمازوخية 😂💗"
+];
+
+const finalMsg = `Happy valentine day 💗🫂  
+ربي يخليك لقلبي ديماا 💗
+يا وريدي يا شراييني يا حياتي كلها نتي 🎀💗
+يا قلبي يا عمري يا حياتي ياعيوني 😊💗
+إن شاء الله تاليتها مع بعض وعيد مور عيد 💗
+نفوتوهاا بالمرة واللحلوة ان شاء الله 🌙🎀
+
+happy valentine day يا نجمتي يا قمرتي يا كواكبي 
+يا أحلى قمرة  يا انقى روح يا اسمى بنت💗  
+أحلى  واغلى وظرف بنيتة عرفتها  فحياتي 💗
+
+gدوة ثاني Ur birthday  
+مالا كل عام ونتي ديالي 💗  
+كل عام ونتي اعيادي كلهااا 💗🌙
+كل عام ونتي شمعة فحياتي ضاوية 💘🫂 
+كل عام ونتي روح وأمل وسند بحرا انا سندك 💘✨
+
+I love youu Ghita more day by day 💗🎀
+
+🐥 from: ur ktkot mustapha`;
+
+let index = 0;
+const questionEl = document.getElementById("question");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const message = document.getElementById("message");
+const buttons = document.querySelector(".buttons");
+
+questionEl.textContent = questions[index];
+
+noBtn.addEventListener("mouseover",()=>{
+  const x = Math.random()*160 - 80;
+  const y = Math.random()*160 - 80;
+  noBtn.style.transform = `translate(${x}px,${y}px)`;
+});
+
+yesBtn.addEventListener("click",()=>{
+  index++;
+  if(index < questions.length){
+    questionEl.textContent = questions[index];
+  }else{
+    buttons.style.display="none";
+    questionEl.style.display="none";
+    message.textContent = finalMsg;
+    message.style.display="block";
+    hearts();
+  }
+});
+
+noBtn.addEventListener("click",()=>{
+  message.textContent = responses[index];
+  message.style.display="block";
+  setTimeout(()=>{
+    index++;
+    if(index < questions.length){
+      questionEl.textContent = questions[index];
+      message.style.display="none";
+    }else{
+      buttons.style.display="none";
+      questionEl.style.display="none";
+      message.textContent = finalMsg;
+      message.style.display="block";
+      hearts();
+    }
+  },1500);
+});
+
+function hearts(){
+  for(let i=0;i<22;i++){
+    setTimeout(()=>{
+      const h=document.createElement("div");
+      h.className="heart";
+      h.innerHTML="💗";
+      h.style.left=Math.random()*100+"vw";
+      h.style.bottom="-20px";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),4000);
+    },i*160);
+  }
+}
+</script></body>
+</html>
